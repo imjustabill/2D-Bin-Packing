@@ -128,7 +128,7 @@ public class RecreateBinsClient {
 				}
 				MArea outer = pieces[n - 1];
 				outer.placeInPosition(0, 0);
-				MArea inner = new MArea(points, n);
+				MArea inner = new MArea(points, n, null);
 				inner.placeInPosition(0, 0);
 				MArea area = new MArea(outer, inner);
 				area.placeInPosition(0, 0);
@@ -141,7 +141,7 @@ public class RecreateBinsClient {
 					double y = Double.valueOf(point[1]);
 					points[j] = new MPointDouble(x, y);
 				}
-				pieces[n] = new MArea(points, n + 1);
+				pieces[n] = new MArea(points, n + 1, null);
 				++n;
 			}
 		}

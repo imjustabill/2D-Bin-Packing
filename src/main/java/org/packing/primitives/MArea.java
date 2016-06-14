@@ -18,6 +18,8 @@ public class MArea extends Area {
 	 */
 	private double area;
 
+	private String filename;
+
 	private int ID;
 	/**
 	 * Accumulate rotation in degrees of this MArea
@@ -30,11 +32,12 @@ public class MArea extends Area {
 	 * @param path Path2D of this MAreq previously constructed
 	 * @param ID   identification for this MArea
 	 */
-	public MArea(Path2D path, int ID) {
+	public MArea(Path2D path, int ID, String filename) {
 		super(path);
 		computeArea();
 		this.ID = ID;
 		rotation = 0;
+		this.filename = filename;
 	}
 
 	/**
@@ -43,11 +46,12 @@ public class MArea extends Area {
 	 * @param area MArea from which we are going to construct this MArea
 	 * @param ID   identification for this MArea
 	 */
-	public MArea(MArea area, int ID) {
+	public MArea(MArea area, int ID, String filename) {
 		super(area);
 		this.area = area.area;
 		this.ID = ID;
 		rotation = area.getRotation();
+		this.filename = filename;
 	}
 
 	/**
@@ -57,11 +61,12 @@ public class MArea extends Area {
 	 * @param ID        identification for this MArea
 	 * @see Rectangle
 	 */
-	public MArea(Rectangle rectangle, int ID) {
+	public MArea(Rectangle rectangle, int ID, String filename) {
 		super(rectangle);
 		this.area = rectangle.getWidth() * rectangle.getHeight();
 		this.ID = ID;
 		rotation = 0;
+		this.filename = filename;
 	}
 
 	/**
@@ -72,11 +77,12 @@ public class MArea extends Area {
 	 * @param ID        identification for this MArea
 	 * @see Rectangle2D.Double
 	 */
-	public MArea(Rectangle2D.Double rectangle, int ID) {
+	public MArea(Rectangle2D.Double rectangle, int ID, String filename) {
 		super(rectangle);
 		this.area = rectangle.getWidth() * rectangle.getHeight();
 		this.ID = ID;
 		rotation = 0;
+		this.filename = filename;
 	}
 
 	/**
@@ -114,7 +120,7 @@ public class MArea extends Area {
 	}
 
 	private static MArea MAreaHolesConstructor(MArea outer, MArea inner) {
-		MArea area = new MArea(outer, outer.getID());
+		MArea area = new MArea(outer, outer.getID(), outer.getFilename());
 		area.subtract(inner);
 		return area;
 	}
@@ -125,11 +131,12 @@ public class MArea extends Area {
 	 * @param points describing the contour of this MArea
 	 * @param ID     identifier for this MArea
 	 */
-	public MArea(MPointDouble[] points, int ID) {
+	public MArea(MPointDouble[] points, int ID, String filename) {
 		super(Utils.createShape(points));
 		this.ID = ID;
 		computeArea();
 		rotation = 0;
+		this.filename = filename;
 	}
 
 	/**
@@ -320,7 +327,7 @@ public class MArea extends Area {
 	 */
 
 	public boolean intersection(MArea other) {
-		MArea intersArea = new MArea(this, this.ID);
+		MArea intersArea = new MArea(this, this.ID, this.filename);
 		intersArea.intersect(other);
 		return !intersArea.isEmpty();
 	}
@@ -393,6 +400,14 @@ public class MArea extends Area {
 	public static final Comparator<MArea> BY_AREA = new ByArea();
 
 	public static final Comparator<MArea> BY_BOUNDING_BOX_AREA = new ByBoundingBoxArea();
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
 
 	/**
 	 * Provides an area based comparison between two MAreas. It is assumed that

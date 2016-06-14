@@ -207,7 +207,7 @@ public class Utils {
 					points[j - 1] = new MPointDouble(x, y);
 				}
 				MArea outer = pieces[n - 1];
-				MArea inner = new MArea(points, n);
+				MArea inner = new MArea(points, n, null); //TODO: does this matter?
 				MArea area = new MArea(outer, inner);
 				area.placeInPosition(0, 0);
 				pieces[n - 1] = area;
@@ -215,7 +215,7 @@ public class Utils {
 			} else {
 				ArrayList<MPointDouble> pointsArrayList = new ArrayList<MPointDouble>();
 				HashSet<MPointDouble> set = new HashSet<MPointDouble>();
-				for (int j = 0; j < src.length; j++) {
+				for (int j = 1; j < src.length; j++) {
 					String[] point = src[j].split(",");
 					double x = Double.valueOf(point[0]);
 					double y = Double.valueOf(point[1]);
@@ -225,7 +225,7 @@ public class Utils {
 						set.add(thisPoint);
 					}
 				}
-				pieces[n] = new MArea(pointsArrayList.toArray(new MPointDouble[0]), n + 1);
+				pieces[n] = new MArea(pointsArrayList.toArray(new MPointDouble[0]), n + 1, src[0]);
 				++n;
 			}
 		}

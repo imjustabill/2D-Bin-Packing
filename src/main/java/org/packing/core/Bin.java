@@ -147,7 +147,7 @@ public class Bin {
 			int where = findWhereToPlace(pieces[i], freeRectangles);
 			if (where != -1) {
 				Rectangle2D.Double freeRect = freeRectangles.get(where);
-				MArea placed = new MArea(pieces[i], pieces[i].getID());
+				MArea placed = new MArea(pieces[i], pieces[i].getID(), pieces[i].getFilename());
 				placed.placeInPosition(freeRect.getX(), freeRect.getMaxY() - placed.getBoundingBox().getHeight());
 				if (!placed.intersection(total)) {
 					Rectangle2D.Double pieceBB = placed.getBoundingBox2D();
@@ -338,7 +338,7 @@ public class Bin {
 			for (int i = 0; i < currentIndex; i++) {
 				MArea container = this.placedPieces[i];
 				if (container.getFreeArea() > currentArea.getArea()) {
-					MArea auxArea = new MArea(currentArea, currentArea.getID());
+					MArea auxArea = new MArea(currentArea, currentArea.getID(), currentArea.getFilename());
 					Rectangle2D.Double contBB = container.getBoundingBox2D();
 					auxArea.placeInPosition(contBB.getX(), contBB.getY());
 					auxArea = sweep(container, auxArea, total);
@@ -351,7 +351,7 @@ public class Bin {
 						movement = true;
 						break;
 					} else {
-						auxArea = new MArea(currentArea, currentArea.getID());
+						auxArea = new MArea(currentArea, currentArea.getID(), currentArea.getFilename());
 						auxArea.rotate(90);
 						auxArea.placeInPosition(contBB.getX(), contBB.getY());
 						auxArea = sweep(container, auxArea, total);
@@ -397,7 +397,7 @@ public class Bin {
 		double dx = inside.getBoundingBox().getWidth() / Constants.DX_SWEEP_FACTOR;
 		double dy = inside.getBoundingBox().getHeight() / Constants.DY_SWEEP_FACTOR;
 		Rectangle2D.Double containerBB = container.getBoundingBox2D();
-		MArea originalArea = new MArea(inside, inside.getID());
+		MArea originalArea = new MArea(inside, inside.getID(), inside.getFilename());
 		while (true) {
 			boolean check = false;
 			inside.move(new MVector(dx, 0));
@@ -407,7 +407,7 @@ public class Bin {
 			if (!containerBB.contains(insideBB.getX(), insideBB.getY())) {
 				if (!inside.intersection(collisionArea) && inside.isInside(new Rectangle(dimension))) {
 					check = true;
-					lastValidPosition = new MArea(inside, inside.getID());
+					lastValidPosition = new MArea(inside, inside.getID(), inside.getFilename());
 					break;
 
 				}
@@ -424,7 +424,7 @@ public class Bin {
 			}
 			if (check) {
 				if (!inside.intersection(collisionArea) && inside.isInside(new Rectangle(dimension))) {
-					lastValidPosition = new MArea(inside, inside.getID());
+					lastValidPosition = new MArea(inside, inside.getID(), inside.getFilename());
 					break;
 				}
 			}
@@ -434,7 +434,7 @@ public class Bin {
 	 * container, its distance to the origin container has not increased
 	 */
 		if (lastValidPosition != null) {
-			MArea containerBBArea = new MArea(containerBB, 0);
+			MArea containerBBArea = new MArea(containerBB, 0, null); ///TODO TODO
 			if (!lastValidPosition.intersection(containerBBArea)) {
 				MPointDouble initialPos = new MPointDouble(originalArea.getBoundingBox2D().getX(), originalArea.getBoundingBox2D().getY());
 				MPointDouble finalPos = new MPointDouble(lastValidPosition.getBoundingBox2D().getX(), lastValidPosition.getBoundingBox2D().getY());
@@ -567,7 +567,7 @@ public class Bin {
 		for (int i = 0; i < notPlaced.length; i++) {
 			boolean placed = false;
 			for (int angle : Constants.ROTATION_ANGLES) {
-				MArea tryArea = new MArea(notPlaced[i], notPlaced[i].getID());
+				MArea tryArea = new MArea(notPlaced[i], notPlaced[i].getID(), notPlaced[i].getFilename());
 				tryArea.rotate(angle);
 				tryArea = dive(tryArea, container, total, new MVector(0, 1));
 				if (tryArea != null) {

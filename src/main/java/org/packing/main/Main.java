@@ -72,7 +72,7 @@ public class Main {
 			for (MArea area : areasInThisbin) {
 				double offsetX = area.getBoundingBox2D().getX();
 				double offsetY = area.getBoundingBox2D().getY();
-				writer.println(area.getID() + " " + area.getRotation() + " " + offsetX + "," + offsetY);
+				writer.println(area.getFilename() + " " + area.getRotation() + " " + offsetX + "," + offsetY);
 			}
 			writer.close();
 			System.out.println("Generated points file for bin " + String.valueOf(i + 1));
